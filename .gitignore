@@ -1,0 +1,64 @@
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Środowiska wirtualne
+venv/
+env/
+.venv/
+.env/
+ENV/
+
+# Plik z kluczami / hasłami (NIGDY nie commitować)
+.env
+*.env
+secrets.json
+
+# ============================================
+# Jupyter Notebook
+# ============================================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ============================================
+# IDE - PyCharm
+# ============================================
+.idea/
+
+# ============================================
+# IDE - VS Code (na wszelki wypadek)
+# ============================================
+.vscode/
+
+# ============================================
+# Dane (nie wrzucamy surowych danych do GitHuba)
+# ============================================
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# ============================================
+# Baza SQLite (może być duża)
+# ============================================
+db/*.db
+db/*.sqlite
+db/*.sqlite3
+!db/.gitkeep
+
+# ============================================
+# System Windows
+# ============================================
+Thumbs.db
+desktop.ini
+
+# ============================================
+# Tymczasowe / logi
+# ============================================
+*.log
+*.tmp
+*.bak
