@@ -53,7 +53,7 @@ tcga-glioma-survival/
 
 - [x] Etap 0 - Setup środowiska
 - [x] Etap 1 - Pozyskanie danych (cBioPortal API + Ceccarelli 2016)
-- [ ] Etap 2 - ETL (czyszczenie i transformacja)
+- [x] Etap 2 - ETL (czyszczenie i transformacja)
 - [ ] Etap 3 - Baza SQL
 - [ ] Etap 4 - EDA (eksploracyjna analiza danych)
 - [ ] Etap 5 - Analiza przeżycia (KM, Cox)
@@ -71,6 +71,10 @@ Dane pochodzą z **The Cancer Genome Atlas (TCGA)**, projektów **TCGA-GBM** (Gl
 |------|--------|------|
 | `data/raw/ceccarelli_2016_table_s1.xlsx` | Materiały suplementarne Ceccarelli et al. 2016, *Cell* 164:550-563 | Pełna tabela kliniczna + status molekularny dla 1122 pacjentów TCGA Pan-Glioma (606 GBM + 516 LGG). 51 kolumn, w tym IDH, MGMT, 1p/19q codeletion. |
 | `data/raw/ceccarelli_clinical_clean.csv` | Wynik selekcji z tabeli powyżej | 16 kluczowych kolumn: identyfikatory, dane kliniczne, outcome (OS), biomarkery (IDH, MGMT, 1p/19q, TERT, ATRX). Snake_case. |
+
+
+| `data/processed/clinical_processed.csv` | Wynik ETL (Etap 2) | 1047 pacjentów z kompletnymi danymi follow-up, 19 kolumn. Gotowy do załadowania do bazy SQL. Wykluczone: 75 pacjentów bez danych OS. Braki w IDH/MGMT zachowane jako NA. |
+
 
 ### Kohorta
 
