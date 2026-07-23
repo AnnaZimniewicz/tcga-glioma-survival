@@ -8,11 +8,13 @@ Czy status metylacji **MGMT** pozostaje niezależnym czynnikiem prognostycznym p
 
 ## Cel projektu
 
-Analiza wpływu biomarkerów molekularnych (IDH1/IDH2, MGMT) na przeżywalność pacjentów z glejakami w kohorcie TCGA (TCGA-GBM + TCGA-LGG), z wykorzystaniem klasycznych metod analizy przeżycia (Kaplan-Meier, regresja Coxa) i prostego modelu uczenia maszynowego do stratyfikacji ryzyka.
+Analiza wpływu biomarkerów molekularnych (IDH1/IDH2, MGMT) na przeżywalność pacjentów
+z glejakami w kohorcie TCGA (TCGA-GBM + TCGA-LGG), z wykorzystaniem klasycznych metod
+analizy przeżycia (Kaplan-Meier, regresja Coxa).
 
 ## Stos technologiczny
 
-- **Python** - pandas, numpy, requests, matplotlib, seaborn, lifelines, scikit-learn
+- **Python** - pandas, numpy, requests, matplotlib, seaborn, lifelines
 - **SQL** - SQLite (relacyjna baza danych projektu)
 - **Tableau Public** - interaktywny dashboard
 - **Git + GitHub** - wersjonowanie i hosting
@@ -54,12 +56,11 @@ tcga-glioma-survival/
 - [x] Etap 0 - Setup środowiska
 - [x] Etap 1 - Pozyskanie danych (cBioPortal API + Ceccarelli 2016)
 - [x] Etap 2 - ETL (czyszczenie i transformacja)
-- [ ] Etap 3 - Baza SQL
-- [ ] Etap 4 - EDA (eksploracyjna analiza danych)
+- [x] Etap 3 - Baza SQL
+- [x] Etap 4 - EDA (eksploracyjna analiza danych)
 - [ ] Etap 5 - Analiza przeżycia (KM, Cox)
-- [ ] Etap 6 - Model ML (klasyfikacja ryzyka)
-- [ ] Etap 7 - Dashboard Tableau
-- [ ] Etap 8 - Dokumentacja i praca dyplomowa
+- [ ] Etap 6 - Dashboard Tableau
+- [ ] Etap 7 - Dokumentacja i praca dyplomowa
 
 ## Dane
 
@@ -93,6 +94,41 @@ Identyfikatory `patient_id` z Ceccarelli vs `patientId` z cBioPortal API: zgodno
 ### Decyzja metodologiczna
 
 Dane molekularne (IDH, MGMT) **nie są dostępne** jako atrybuty kliniczne na poziomie pacjenta w żadnej wersji cBioPortal (Firehose Legacy, PanCancer Atlas, GDC 2025). Dlatego za źródło tych zmiennych przyjmujemy materiały suplementarne Ceccarelli 2016 – obejmują dokładnie tę samą kohortę 1122 pacjentów.
+
+## Baza danych (Etap 3)
+
+Dane z `data/processed/clinical_processed.csv` (1047 pacjentów, 19 kolumn) załadowane
+do znormalizowanej bazy SQLite (`db/tcga_glioma.db`, poza repo) w trzech tabelach:
+`patients`, `biomarkers`, `survival`, połączonych przez `patient_id`.
+
+- Schemat: [`sql/schema.sql`](sql/schema.sql)
+- Przykładowe zapytania (14, od SELECT do window functions): [`sql/example_queries.sql`](sql/example_queries.sql)
+- Diagram ERD: [`docs/erd_diagram.png`](docs/erd_diagram.png)
+
+## Eksploracyjna analiza danych (Etap 4)
+
+Notebook: [`notebooks/04_eda.ipynb`](notebooks/04_eda.ipynb)
+
+**Kohorta:** 1047 pacjentów (590 GBM, 457 LGG); po wykluczeniu 3 pacjentów z błędnym
+(ujemnym) `os_months` (source site TCGA-QH) - **n=1044**.
+
+**Wiek:** średnio 51,4 lat (SD 15,8); GBM 57,8 lat vs LGG 43,2 lat - rozkład kohorty
+jest lekko dwumodalny, co odzwierciedla dwie różne subpopulacje kliniczne.
+
+**Biomarkery:**
+
+| Zmienna | Braki | Rozkład |
+|---|---|---|
+| IDH status | 121 (11,6%) | Mutant silnie skoncentrowany w LGG (81%), rzadki w GBM (8%) |
+| MGMT status | 185 (17,7%) | Methylated częstszy w LGG (82%) niż GBM (45%) |
+| 1p/19q codeletion | 22 (2,1%) | Praktycznie nieobecna w GBM, częsta w LGG (33%) |
+| KPS | 350 (33,5%) | - |
+| Liczba mutacji somatycznych | 293 (28,1%) | Silnie prawoskośny rozkład (mediana 35, średnia 54,2, max 12255 — fenotyp hipermutacyjny) |
+
+**Decyzja o brakach danych:** bez imputacji dla biomarkerów - pacjenci z brakiem w IDH
+i/lub MGMT wykluczani z analiz wykorzystujących te zmienne. Efektywna kohorta
+z kompletnym IDH+MGMT (do modelu Coxa, Etap 5): **n=809**.
+
 
 ## Autor
 
