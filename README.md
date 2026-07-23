@@ -58,7 +58,7 @@ tcga-glioma-survival/
 - [x] Etap 2 - ETL (czyszczenie i transformacja)
 - [x] Etap 3 - Baza SQL
 - [x] Etap 4 - EDA (eksploracyjna analiza danych)
-- [ ] Etap 5 - Analiza przeżycia (KM, Cox)
+- [x] Etap 5 - Analiza przeżycia (KM, Cox)
 - [ ] Etap 6 - Dashboard Tableau
 - [ ] Etap 7 - Dokumentacja i praca dyplomowa
 
