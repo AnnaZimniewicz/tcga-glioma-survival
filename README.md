@@ -59,7 +59,7 @@ tcga-glioma-survival/
 - [x] Etap 3 - Baza SQL
 - [x] Etap 4 - EDA (eksploracyjna analiza danych)
 - [x] Etap 5 - Analiza przeżycia (KM, Cox)
-- [ ] Etap 6 - Dashboard Tableau
+- [x] Etap 6 - Dashboard Tableau
 - [ ] Etap 7 - Dokumentacja i praca dyplomowa
 
 ## Dane
@@ -129,6 +129,51 @@ jest lekko dwumodalny, co odzwierciedla dwie różne subpopulacje kliniczne.
 i/lub MGMT wykluczani z analiz wykorzystujących te zmienne. Efektywna kohorta
 z kompletnym IDH+MGMT (do modelu Coxa, Etap 5): **n=809**.
 
+## Analiza przeżycia (Etap 5)
+
+Notebook: [`notebooks/05_survival_analysis.ipynb`](notebooks/05_survival_analysis.ipynb)
+
+Krzywe Kaplana-Meiera (cała kohorta, podział wg IDH, wg MGMT, i 4 grupy IDH×MGMT)
+oraz model Coxa wielowariantowy odpowiadający na pytanie badawcze.
+
+**Mediana OS:**
+
+| Grupa | Mediana OS (miesiące) | n |
+|---|---|---|
+| Cała kohorta | 20,7 | 1043 |
+| IDH Mutant | 89,7 | 404 |
+| IDH WT | 14,0 | 518 |
+| MGMT Methylated | 50,1 | 558 |
+| MGMT Unmethylated | 14,9 | 300 |
+
+Log-rank: IDH p=5,89e-71; MGMT p=6,10e-22.
+
+**Model Coxa** (n=808; `idh_mutant`, `mgmt_methylated`, `age_at_diagnosis`):
+
+| Zmienna | HR | CI 95% | p-value |
+|---|---|---|---|
+| IDH mutant | 0,21 | 0,15–0,29 | <0,005 |
+| MGMT methylated | 0,92 | 0,72–1,17 | 0,49 |
+| Wiek (na rok) | 1,05 | 1,04–1,06 | <0,005 |
+
+Concordance: 0,82.
+
+**Odpowiedź na pytanie badawcze:** po uwzględnieniu statusu IDH i wieku, MGMT
+**nie jest** niezależnym czynnikiem prognostycznym przeżycia w tej kohorcie
+(p=0,49). Efekt MGMT widoczny w analizie jednoczynnikowej wynika w dużej mierze
+z korelacji ze statusem IDH.
+
+## Dashboard Tableau Public (Etap 6)
+
+**[Zobacz dashboard na Tableau Public →](https://public.tableau.com/app/profile/anna.zimniewicz/viz/TCGA_Glioma_Survival_Dashboard)**
+
+Interaktywny dashboard z 4 widokami:
+- **Charakterystyka kohorty** - demografia, rozkład wieku, podział wg typu guza i płci
+- **Krzywe przeżycia** - krzywe KM z filtrem przełączającym (cała kohorta / IDH / MGMT / IDH×MGMT)
+- **Mapa biomarkerów** - współwystępowanie IDH i MGMT
+- **Eksploracja biomarkerów** — scatter (wiek × przeżycie × liczba mutacji) i boxplot OS wg grupy
+
+Plik: [`tableau/dashboard.twbx`](tableau/dashboard.twbx)
 
 ## Autor
 
