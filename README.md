@@ -48,8 +48,7 @@ tcga-glioma-survival/
 
 
 ## Status projektu
-
-🚧 **W trakcie realizacji** (deadline: wrzesień 2026)
+Praca obroniona 09.2026 na ocenę 5. 
 
 ### Etapy
 
