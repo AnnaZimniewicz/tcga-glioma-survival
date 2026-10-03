@@ -60,7 +60,7 @@ tcga-glioma-survival/
 - [x] Etap 4 - EDA (eksploracyjna analiza danych)
 - [x] Etap 5 - Analiza przeżycia (KM, Cox)
 - [x] Etap 6 - Dashboard Tableau
-- [ ] Etap 7 - Dokumentacja i praca dyplomowa
+- [x] Etap 7 - Dokumentacja i praca dyplomowa
 
 ## Dane
 
